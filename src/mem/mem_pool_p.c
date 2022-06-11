@@ -1,6 +1,6 @@
 /**
- * pool (chunk) allocator private functions and interface description
- * */
+  *pool (chunk) allocator private functions and interface description
+  **/
 
 #include "mem.h"
 
@@ -14,21 +14,21 @@ typedef struct memblock {
 static p_pool_t params_;
 
 /* should return error ?*/
-static int m_pool_init(const void* params) {
+static int m_pool_init(const void *params) {
     params_ = *(p_pool_t*)params;
     return 0;
 }
 
-static void* m_pool_alloc(size_t size) {
+static void *m_pool_alloc(size_t size) {
     if (size > (params_.size - sizeof(mblock_t)) || !params_.pool) {
         return NULL;
     }
 
-    void* tmp = NULL;
-    void* ptr = params_.pool;
+    void *tmp = NULL;
+    void *ptr = params_.pool;
     for (size_t i = 0; i < params_.count; ++i) {
         /* storing block in chunk */
-        mblock_t* block = (mblock_t*)ptr; 
+        mblock_t *block = (mblock_t*)ptr; 
                 
         if (block->size == 0) {
             block->size = size;
@@ -43,10 +43,10 @@ static void* m_pool_alloc(size_t size) {
     return tmp;
 }
 
-static void m_pool_dealloc(void* ptr) {
+static void m_pool_dealloc(void *ptr) {
     if (!ptr) return;
 
-    mblock_t* block = (mblock_t*)(ptr - sizeof(size_t));
+    mblock_t *block = (mblock_t*)(ptr - sizeof(size_t));
     block->size = 0;
 }
 

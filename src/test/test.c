@@ -15,10 +15,10 @@ p_pool_t pool_param = {
 int main() {
     mem_init(&m_pool_desc, &pool_param);
 
-    void* ptr1 = mem_alloc(10);
-    void* ptr2 = mem_alloc(20);
-    void* ptr3 = mem_alloc(30);
-    void* ptr4 = mem_alloc(100);
+    void *ptr1 = mem_alloc(10);
+    void *ptr2 = mem_alloc(20);
+    void *ptr3 = mem_alloc(30);
+    void *ptr4 = mem_alloc(100);
 
     mem_free(ptr1);
     mem_free(ptr2);
