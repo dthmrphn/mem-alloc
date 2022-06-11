@@ -1,1 +1,0 @@
-#define USE_STRATEGY 1
