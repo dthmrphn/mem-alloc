@@ -1,7 +1,7 @@
 #include "mem.h"
+#include "tests.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
 
 #define BLOCK_COUNT 50
 #define BLOCK_SIZE  100
@@ -20,7 +20,7 @@ p_pool_t pool_param2 = {
     .size = BLOCK_SIZE + BLOCK_COUNT
 };
 
-int main() {
+int test_pool() {
     mem_create(&m_pool_desc, &pool_param1);
     mem_create(&m_pool_desc, &pool_param2);
 

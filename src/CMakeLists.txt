@@ -16,6 +16,10 @@ add_library(mem STATIC
     mem/mem_list_p.c
 )
 
-add_executable(test test/test_list.c)
+add_executable(test 
+    test/test_list.c
+    test/test_pool.c 
+    test/main.c
+)
 
 target_link_libraries(test PRIVATE mem)

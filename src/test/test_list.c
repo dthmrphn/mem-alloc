@@ -1,7 +1,7 @@
 #include "mem.h"
+#include "tests.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
 
 static uint8_t pool[1000];
 p_pool_t pool_param = {
@@ -10,7 +10,7 @@ p_pool_t pool_param = {
     .size = 1000
 };
 
-int main() {
+int test_list() {
     mem_create(&m_list_desc, &pool_param);
 
     void *ptr1 = mem_alloc(10);
