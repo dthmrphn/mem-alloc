@@ -4,29 +4,51 @@
 
 #include "mem.h"
 
-/* meta of pool allocator blocks*/
+/* count of memory pools */
+#define MEM_POOL_RESOURCE_COUNT     5
+
+/* meta of pool allocator blocks */
 typedef struct memblock {
     size_t size;    /* size of allocated data block */
     uint8_t data[]; /* pointer to allocated block   */
 } mblock_t;
 
 /* holding allocator's params there */
-static p_pool_t params_;
+static p_pool_t params_[MEM_POOL_RESOURCE_COUNT];
+static size_t last_added = 0;
 
 /* should return error ?*/
 static int m_pool_init(const void *params) {
-    params_ = *(p_pool_t*)params;
-    return 0;
+    if (last_added < MEM_POOL_RESOURCE_COUNT) {
+        params_[last_added] = *(p_pool_t*)params;
+        ++last_added;
+        return 0;
+    }
+    return 1;
+}
+
+static p_pool_t m_pool_match(size_t size) {
+    p_pool_t rv = {0, 0, 0};
+
+    for (size_t i = 0; i < last_added; i++) {
+        if (size < params_[i].size) {
+            rv = params_[i];
+            break;
+        }
+    }
+    return rv;
 }
 
 static void *m_pool_alloc(size_t size) {
-    if (size > (params_.size - sizeof(mblock_t)) || !params_.pool) {
+    p_pool_t param = m_pool_match(size);
+
+    if (size > (param.size - sizeof(mblock_t)) || !param.pool) {
         return NULL;
     }
 
     void *tmp = NULL;
-    void *ptr = params_.pool;
-    for (size_t i = 0; i < params_.count; ++i) {
+    void *ptr = param.pool;
+    for (size_t i = 0; i < param.count; ++i) {
         /* storing block in chunk */
         mblock_t *block = (mblock_t*)ptr; 
                 
@@ -37,7 +59,7 @@ static void *m_pool_alloc(size_t size) {
         } 
 
         /* moving to next chunk */
-        ptr = ptr + params_.size;
+        ptr = ptr + param.size;
     }
 
     return tmp;
@@ -53,7 +75,7 @@ static void m_pool_dealloc(void *ptr) {
 const mem_desc_t m_pool_desc = {
     .vtable = {
         .init = m_pool_init,
-        .allocate = m_pool_alloc,
-        .deallocate = m_pool_dealloc
+        .alloc = m_pool_alloc,
+        .dealloc = m_pool_dealloc
     }
 };
