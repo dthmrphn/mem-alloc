@@ -6,8 +6,8 @@
 typedef struct mem_desc {
     struct {
         int   (*init)(const void *params);
-        void *(*allocate)(size_t size);
-        void  (*deallocate)(void *ptr);
+        void *(*alloc)(size_t size);
+        void  (*dealloc)(void *ptr);
     } vtable;
 } mem_desc_t;
 
