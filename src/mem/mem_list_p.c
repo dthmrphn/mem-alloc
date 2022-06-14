@@ -28,15 +28,15 @@ static void *m_list_alloc(size_t size) {
     if (!params_.pool) {
         return NULL;
     }
-    const void *pool_end = params_.pool + params_.size;
+    const void *pool_end = (void*)(params_.pool + params_.size - 1);
     mblock_t *block = (mblock_t*)(params_.pool);
     size_t to_alloc = size + sizeof(mblock_t);
 
     while (block->next && (void*)block < pool_end) {
         /* check if new block could be linked between allocated blocks */
-        if (((void*)block + block->size + to_alloc) < (void*)block->next) {
+        if (((void*)block->data + block->size + to_alloc) < (void*)block->next) {
             /* inserting new block */
-            mblock_t *tmp = (void*)block + block->size + sizeof(mblock_t);
+            mblock_t *tmp = (void*)block->data + block->size;
             tmp->next = block->next;
             block->next = tmp;
             tmp->size = size;
@@ -56,7 +56,7 @@ static void *m_list_alloc(size_t size) {
 
 static void m_list_dealloc(void *ptr) {
     /* dereference to the block holding pointer */
-    mblock_t *this = (mblock_t*)(ptr - sizeof(mblock_t));
+    mblock_t *this = (void*)(ptr - sizeof(mblock_t));
 
     mblock_t *prev = params_.pool;
     /* finding previous to current block */
