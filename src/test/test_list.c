@@ -66,7 +66,5 @@ int test_list() {
     mem_free(ptr2);
     mem_free(ptr1);
 
-
-
     return 0;
 }
