@@ -4,16 +4,12 @@
 #include <stddef.h>
 
 typedef struct mem_desc {
-    struct {
-        int   (*init)(const void *params);
-        void *(*alloc)(size_t size);
-        void  (*dealloc)(void *ptr);
+    struct {    
+        int   (*init)(const void *params);          /* pointer to initialize function */
+        void *(*m_alloc)(size_t size);              /* pointer to allocating function */
+        void  (*d_alloc)(void *ptr);                /* pointer to deallocating function */
+        void *(*r_alloc)(void *ptr, size_t size);   /* pointer to reallocating function */
     } vtable;
 } mem_desc_t;
-
-int   mem_init(const void *desc, const void *params);
-void *mem_alloc(size_t size);
-void  mem_free(void *ptr);
-
 
 #endif

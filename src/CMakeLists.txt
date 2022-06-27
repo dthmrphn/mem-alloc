@@ -14,6 +14,7 @@ add_library(mem STATIC
     mem/mem_it.c
     mem/mem_pool_p.c
     mem/mem_list_p.c
+    mem/mem_util.c
 )
 
 add_executable(test 

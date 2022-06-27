@@ -26,7 +26,7 @@ int mem_create(const void *desc, const void *params) {
  */
 void *mem_alloc(size_t size) {
     if (!m_desc_) return NULL;
-    return m_desc_->vtable.alloc(size);
+    return m_desc_->vtable.m_alloc(size);
 }
 
 /**
@@ -36,5 +36,9 @@ void *mem_alloc(size_t size) {
  */
 void mem_free(void *ptr) {
     if (!m_desc_) return;
-    return m_desc_->vtable.dealloc(ptr);
+    return m_desc_->vtable.d_alloc(ptr);
+}
+void *mem_realloc(void *ptr, size_t size) {
+    if (!m_desc_) return NULL;
+    return m_desc_->vtable.r_alloc(ptr, size);
 }

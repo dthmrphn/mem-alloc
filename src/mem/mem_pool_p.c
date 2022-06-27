@@ -72,10 +72,16 @@ static void m_pool_dealloc(void *ptr) {
     block->size = 0;
 }
 
+static void *m_pool_realloc(void *ptr, size_t size) {
+    (void)ptr;
+    return m_pool_alloc(size);
+}
+
 const mem_desc_t m_pool_desc = {
     .vtable = {
         .init = m_pool_init,
-        .alloc = m_pool_alloc,
-        .dealloc = m_pool_dealloc
+        .m_alloc = m_pool_alloc,
+        .d_alloc = m_pool_dealloc,
+        .r_alloc = m_pool_realloc
     }
 };

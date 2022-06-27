@@ -70,10 +70,35 @@ static void m_list_dealloc(void *ptr) {
     this->size = 0;
 }
 
+static void *m_list_realloc(void *ptr, size_t size) {
+    if (!ptr) {
+        return m_list_alloc(size);
+    }
+
+    mblock_t *this = (void*)(ptr - sizeof(mblock_t));
+
+    void *result = NULL;
+
+    if (this->size < size) {
+        /* 1. alloc */
+        result = m_list_alloc(size);
+        if (!result) {
+            return result;
+        }
+        /* 2. copy */
+        mem_copy(result, this->data, this->size);
+        /* 3. free */
+        m_list_dealloc(ptr);
+    }
+
+    return result;
+}
+
 const mem_desc_t m_list_desc = {
     .vtable = {
         .init = m_list_init,
-        .alloc = m_list_alloc,
-        .dealloc = m_list_dealloc
+        .m_alloc = m_list_alloc,
+        .d_alloc = m_list_dealloc,
+        .r_alloc = m_list_realloc
     }
 };
