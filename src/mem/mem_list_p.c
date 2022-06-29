@@ -2,7 +2,7 @@
   *linked list allocator private functions and interface description
   **/
 
-#include "mem.h"
+#include "mem_it.h"
 
 /* meta of linked list allocator blocks */
 typedef struct memblock {

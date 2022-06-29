@@ -1,5 +1,4 @@
 #include "mem_it.h"
-#include "mem.h"
 
 static const mem_desc_t *m_desc_;
 
@@ -38,6 +37,14 @@ void mem_free(void *ptr) {
     if (!m_desc_) return;
     return m_desc_->vtable.d_alloc(ptr);
 }
+
+/**
+ * @brief reallocates previously allocated memory block
+ * 
+ * @param ptr pointer to memory block to be reallocated
+ * @param size new size
+ * @return pointer to data block or NULL
+ */
 void *mem_realloc(void *ptr, size_t size) {
     if (!m_desc_) return NULL;
     return m_desc_->vtable.r_alloc(ptr, size);

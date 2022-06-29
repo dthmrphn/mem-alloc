@@ -1,5 +1,4 @@
 #include "mem.h"
-#include "tests.h"
 
 #include <stddef.h>
 
@@ -20,21 +19,27 @@ p_pool_t pool_param2 = {
     .size = BLOCK_SIZE + BLOCK_COUNT
 };
 
-int test_pool() {
+int main() {
     mem_create(&m_pool_desc, &pool_param1);
     mem_create(&m_pool_desc, &pool_param2);
 
-    void *ptr1 = mem_alloc(10);
-    void *ptr2 = mem_alloc(20);
-    void *ptr3 = mem_alloc(30);
-    void *ptr4 = mem_alloc(100);
-    void *ptr5 = mem_alloc(140);
+    void *ptr = NULL;
+    size_t test_sizes[] = {10, 20, 30, 40, 50, 100, 140};
 
-    mem_free(ptr1);
-    mem_free(ptr2);
-    mem_free(ptr3);
-    mem_free(ptr4);
-    mem_free(ptr5);
+    int rv = 0;
 
-    return 0;
+    for (size_t i = 0; i < (sizeof(test_sizes) / sizeof(size_t)); ++i) {
+        ptr = mem_alloc(test_sizes[i]);
+        if (!ptr) {
+            rv = 1;
+        }
+
+        mem_free(ptr);
+
+        if (rv) {
+            break;
+        }
+    }
+
+    return rv;
 }

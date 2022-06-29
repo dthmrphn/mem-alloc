@@ -2,7 +2,7 @@
   *pool (chunk) allocator private functions and interface description
   **/
 
-#include "mem.h"
+#include "mem_it.h"
 
 /* count of memory pools */
 #define MEM_POOL_RESOURCE_COUNT     5
