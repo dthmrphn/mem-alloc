@@ -4,7 +4,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "mem_it.h"
+// #include "mem_it.h"
+
+typedef struct mem_desc mem_desc_t;
 
 /* pool allocator params */
 typedef struct poolparam {
@@ -16,6 +18,9 @@ typedef struct poolparam {
 int   mem_create(const void *desc, const void *params);
 void *mem_alloc(size_t size);
 void  mem_free(void *ptr);
+void *mem_realloc(void *ptr, size_t size);
+
+void mem_copy(void *a, const void *b, size_t size);
 
 extern const mem_desc_t m_pool_desc;
 extern const mem_desc_t m_list_desc;
