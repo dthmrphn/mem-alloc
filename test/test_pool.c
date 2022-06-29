@@ -28,7 +28,7 @@ int main() {
 
     int rv = 0;
 
-    for (size_t i = 0; i < (sizeof(test_sizes) / sizeof(size_t)); ++i) {
+    for (size_t i = 0; i < (sizeof(test_sizes) / sizeof(test_sizes[0])); ++i) {
         ptr = mem_alloc(test_sizes[i]);
         if (!ptr) {
             rv = 1;

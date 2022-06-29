@@ -12,7 +12,7 @@ p_pool_t pool_param = {
 };
 
 void set_buf(void *buf, size_t size) {
-    uint8_t *ptr = buf;
+    volatile uint8_t *ptr = buf;
     size_t i = 0;
     while (i < size) {
         ptr[i++] = (uint8_t)rand(); 
