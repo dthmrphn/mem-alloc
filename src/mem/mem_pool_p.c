@@ -5,7 +5,7 @@
 #include "mem_it.h"
 
 /* count of memory pools */
-#define MEM_POOL_RESOURCE_COUNT     5
+#define MEM_POOL_RESOURCES_COUNT     5
 
 /* meta of pool allocator blocks */
 typedef struct memblock {
@@ -14,12 +14,12 @@ typedef struct memblock {
 } mblock_t;
 
 /* holding allocator's params there */
-static p_pool_t params_[MEM_POOL_RESOURCE_COUNT];
+static p_pool_t params_[MEM_POOL_RESOURCES_COUNT];
 static size_t last_added = 0;
 
 /* should return error ?*/
 static int m_pool_init(const void *params) {
-    if (last_added < MEM_POOL_RESOURCE_COUNT) {
+    if (last_added < MEM_POOL_RESOURCES_COUNT) {
         params_[last_added] = *(p_pool_t*)params;
         ++last_added;
         return 0;
