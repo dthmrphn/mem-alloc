@@ -1,3 +1,5 @@
+message(STATUS "Bulding for unix")
+
 add_compile_options(
     "-Wextra" "-Wall"
     $<$<CONFIG:DEBUG>:-g>
