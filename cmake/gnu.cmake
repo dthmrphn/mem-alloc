@@ -1,4 +1,4 @@
-message(STATUS "Bulding for unix")
+message(STATUS "Bulding for Linux with GNU compiler")
 
 add_compile_options(
     "-Wextra" "-Wall"

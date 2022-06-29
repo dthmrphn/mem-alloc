@@ -6,6 +6,7 @@ project(mem
 )
 
 include(CTest)
+add_subdirectory(cmake)
 
 add_subdirectory(src)
 add_subdirectory(test)
