@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-// #include "mem_it.h"
-
 typedef struct mem_desc mem_desc_t;
 
 /* pool allocator params */

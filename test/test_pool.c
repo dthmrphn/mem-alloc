@@ -32,13 +32,10 @@ int main() {
         ptr = mem_alloc(test_sizes[i]);
         if (!ptr) {
             rv = 1;
+            break;
         }
 
         mem_free(ptr);
-
-        if (rv) {
-            break;
-        }
     }
 
     return rv;
