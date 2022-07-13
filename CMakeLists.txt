@@ -6,7 +6,8 @@ project(mem
     LANGUAGES C
 )
 
-add_subdirectory(cmake)
+include(cmake/${CMAKE_SYSTEM_NAME}.cmake)
+
 add_subdirectory(src)
 
 # build test when bulding this project alone 
