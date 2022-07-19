@@ -6,6 +6,9 @@ project(mem
     LANGUAGES C
 )
 
+# set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=* -Wno-readability-identifier-length")
+# set(CMAKE_C_CLANG_TIDY "clang-tidy;-checks=* -Wno-readability-identifier-length")
+
 include(cmake/${CMAKE_SYSTEM_NAME}.cmake)
 
 add_subdirectory(src)

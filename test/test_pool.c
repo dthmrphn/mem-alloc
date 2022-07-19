@@ -6,7 +6,7 @@
 #define BLOCK_SIZE  100
 
 static uint8_t pool1[BLOCK_COUNT][BLOCK_SIZE];
-p_pool_t pool_param1 = {
+const p_pool_t pool_param1 = {
     .pool = pool1,
     .count = BLOCK_COUNT,
     .size = BLOCK_SIZE

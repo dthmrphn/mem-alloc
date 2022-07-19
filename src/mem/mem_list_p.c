@@ -28,6 +28,10 @@ static void *m_list_alloc(size_t size) {
     if (!params_.pool) {
         return NULL;
     }
+
+    /* align size to sizeof(size_t) */
+    size = mem_align(size);
+    
     const void *pool_end = (void*)(params_.pool + params_.size - 1);
     mblock_t *block = (mblock_t*)(params_.pool);
     size_t to_alloc = size + sizeof(mblock_t);
@@ -47,16 +51,23 @@ static void *m_list_alloc(size_t size) {
         block = block->next;
     }
 
+    /* check if new memory block doesnt overflow pool boundaries*/
+    if ((void*)block + to_alloc > pool_end) {
+        return NULL;
+    }
+
     block->size = size;
     block->next = (void*)block + to_alloc;
-
 
     return block->data;
 }
 
 static void m_list_dealloc(void *ptr) {
+    if (!ptr) {
+        return;
+    }
     /* dereference to the block holding pointer */
-    mblock_t *block = (void*)(ptr - sizeof(mblock_t));
+    mblock_t *block = (mblock_t*)(ptr - sizeof(mblock_t));
 
     mblock_t *prev = params_.pool;
     /* finding previous to current block */
@@ -70,24 +81,30 @@ static void m_list_dealloc(void *ptr) {
     block->size = 0;
 }
 
+/**
+ * @brief this function might cause UB if return value assigns to passed param ptr
+ * for example void *ptr = mem_realloc(ptr, 100)
+ */
 static void *m_list_realloc(void *ptr, size_t size) {
     if (!ptr) {
         return m_list_alloc(size);
     }
 
-    mblock_t *block = (void*)(ptr - sizeof(mblock_t));
+    mblock_t *block = (mblock_t*)(ptr - sizeof(mblock_t));
+
+    if (block->size >= size) {
+        return ptr;
+    }
 
     void *result = NULL;
 
     if (block->size < size) {
-        /* 1. alloc */
         result = m_list_alloc(size);
         if (!result) {
             return result;
         }
-        /* 2. copy */
         mem_copy(result, block->data, block->size);
-        /* 3. free */
+
         m_list_dealloc(ptr);
     }
 

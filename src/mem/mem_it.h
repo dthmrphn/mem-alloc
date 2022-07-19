@@ -13,6 +13,10 @@ struct mem_desc {
     } vtable;
 };
 
+static inline size_t mem_align(size_t size) {
+    return (size - (size % sizeof(size_t)) + sizeof(size_t));
+}
+
 #include "mem.h"
 
 #endif

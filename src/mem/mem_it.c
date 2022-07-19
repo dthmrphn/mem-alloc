@@ -10,7 +10,7 @@ static const mem_desc_t *m_desc_;
  * @return 0 if success 
  */
 int mem_create(const void *desc, const void *params) {
-    if (!desc && !params) {
+    if (!desc || !params) {
         return 1;
     }
     m_desc_ = desc;
@@ -24,8 +24,10 @@ int mem_create(const void *desc, const void *params) {
  * @return pointer to data block or NULL
  */
 void *mem_alloc(size_t size) {
-    if (!m_desc_) return NULL;
-    return m_desc_->vtable.m_alloc(size);
+    // if (!m_desc_) return NULL;
+    // return m_desc_->vtable.m_alloc(size);
+
+    return !m_desc_ ? NULL : m_desc_->vtable.m_alloc(size);
 }
 
 /**
@@ -34,8 +36,10 @@ void *mem_alloc(size_t size) {
  * @param ptr pointer to memory block to be freed
  */
 void mem_free(void *ptr) {
-    if (!m_desc_) return;
-    return m_desc_->vtable.d_alloc(ptr);
+    // if (!m_desc_) return;
+    // return m_desc_->vtable.d_alloc(ptr);
+
+    return !m_desc_ ? NULL : m_desc_->vtable.d_alloc(ptr);
 }
 
 /**
@@ -46,6 +50,8 @@ void mem_free(void *ptr) {
  * @return pointer to data block or NULL
  */
 void *mem_realloc(void *ptr, size_t size) {
-    if (!m_desc_) return NULL;
-    return m_desc_->vtable.r_alloc(ptr, size);
+    // if (!m_desc_) return NULL;
+    // return m_desc_->vtable.r_alloc(ptr, size);
+
+    return !m_desc_ ? NULL : m_desc_->vtable.r_alloc(ptr, size);
 }
