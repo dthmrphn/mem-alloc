@@ -33,7 +33,6 @@ protected:
     void* do_allocate(size_t bytes, size_t alignment) noexcept override {
         (void)alignment;
         auto p = mem_realloc(last_, bytes);
-        // auto p = mem_alloc(bytes);
         std::cout << "\033[1;34malloc\033[0m:\taddres: " << (void*)p << "\tsize: " << bytes << "b\taligment: " << alignment << "b\n";
         last_ = static_cast<T*>(p);
         return p;
@@ -58,11 +57,11 @@ using bytearray = custom_vec<unsigned char>;
 
 using type = unsigned int;
 
-constexpr size_t test_size = 10000;
+constexpr size_t test_size = 100;
 
 int main() {
-    type buf[test_size];
-    custom_allocator<type> allocator(buf, sizeof(buf));
+    type buf[test_size * 2]{};
+    custom_allocator<type> allocator(buf, test_size);
     bytearray v_alloc(0, &allocator);
     std::vector<type> v_default;
 
@@ -82,14 +81,10 @@ int main() {
     elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
     std::cout << "v_alc: " << elapsed << " us\n";
 
-    if(std::memcmp(v_default.data(), v_alloc.data(), v_default.size())) {
-        std::cout << "v_alc != v_def\n";
-    }
-
-    // for (const auto& i : v_default) {
-    //     std::cout << (int)i << ' ';
+    // if(std::memcmp(v_default.data(), v_alloc.data(), v_default.size())) {
+    //     std::cout << "v_alc != v_def\n";
+    //     return 1;
     // }
-    // std::cout << '\n';
 
     return 0;
 }

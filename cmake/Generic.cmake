@@ -1,7 +1,7 @@
 add_compile_options(
     "-Wextra" "-Wall"
     $<$<CONFIG:DEBUG>:-g>
-    $<$<CONFIG:RELEASE>:-O0>    # there are some problems with optimization on ARM baremetal flatroms
+    $<$<CONFIG:RELEASE>:-O2>   
     $<$<CONFIG:RELEASE>:-Werror>
 )
 
